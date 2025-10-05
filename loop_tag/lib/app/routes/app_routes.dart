@@ -8,6 +8,8 @@ abstract class Routes {
   static const ADD_PRODUCT = _Paths.ADD_PRODUCT;
   static const SCANNER = _Paths.SCANNER;
   static const PRODUCT_DISPLAY = _Paths.PRODUCT_DISPLAY;
+  static const LOADING_PAGE = _Paths.LOADING_PAGE;
+  static const NFC_WRITER = _Paths.NFC_WRITER;
 }
 
 abstract class _Paths {
@@ -17,4 +19,6 @@ abstract class _Paths {
   static const ADD_PRODUCT = '/add-product';
   static const SCANNER = '/scanner';
   static const PRODUCT_DISPLAY = '/product-display';
+  static const LOADING_PAGE = '/loading-page';
+  static const NFC_WRITER = '/nfc-writer';
 }

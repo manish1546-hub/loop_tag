@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loop_tag/app/utils/core/login_api.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
@@ -22,12 +23,9 @@ class LoginController extends GetxController {
 
     isLoading.value = true;
 
-    await Future.delayed(const Duration(seconds: 2)); // simulate API
+    await AuthApiService().login(email, password);
 
     isLoading.value = false;
-
-    // Example success
-    Get.snackbar("Success", "Logged in as $email");
   }
 
   void forgotPassword() {
@@ -35,14 +33,14 @@ class LoginController extends GetxController {
   }
 
   void signInWithGoogle() {
-    Get.snackbar("Google", "Google login tapped");
+    Get.snackbar("Google", "Google login redirection");
   }
 
   void signInWithApple() {
-    Get.snackbar("Apple", "Apple login tapped");
+    Get.snackbar("Apple", "Apple login redirection");
   }
 
   void signInWithFacebook() {
-    Get.snackbar("Facebook", "Facebook login tapped");
+    Get.snackbar("Facebook", "Facebook login redirection");
   }
 }

@@ -79,8 +79,8 @@ class ProductCard extends StatelessWidget {
           ),
           // Show the first image if available, otherwise a placeholder
           child: product.imageUrls.isNotEmpty
-              ? Image.file(
-                  File(product.imageUrls.first),
+              ? Image.network(
+                  product.imageUrls.first,
                   fit: BoxFit.cover,
                 )
               : const Icon(Icons.image_not_supported,

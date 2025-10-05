@@ -49,23 +49,62 @@ class AddProductView extends GetView<AddProductController> {
             const SizedBox(height: 24),
             _buildCategoryDropdown(),
             const SizedBox(height: 32),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: controller.addProduct,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+            Obx(() {
+              if (controller.createdProduct.value == null) {
+                // State 1: Show "Add Product" button
+                return SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: controller.addProduct,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Add Product',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'Add Product',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
+                );
+              } else {
+                // State 2: Show "Write to NFC" button
+                return Column(
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Product created successfully!',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: controller.goToNfcWriter,
+                        icon: const Icon(Icons.nfc, color: Colors.white),
+                        label: const Text(
+                          'Write Product ID to NFC Tag',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+            }),
           ],
         ),
       ),

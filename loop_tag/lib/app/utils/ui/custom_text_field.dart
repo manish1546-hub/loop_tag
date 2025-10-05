@@ -49,7 +49,8 @@ class CustomTextField extends StatelessWidget {
                   keyboardType: keyBoardType,
                   controller: controller,
                   obscureText: obscureText,
-                  maxLines: maxLines,
+                  maxLines: obscureText ? 1 : maxLines,
+                  minLines: obscureText ? 1 : (maxLines != null ? 1 : null),
                   style: const TextStyle(fontSize: 14),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(vertical: 18),

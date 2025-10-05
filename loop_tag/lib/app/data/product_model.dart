@@ -6,6 +6,7 @@ class Product {
   final double? tax;
   final String description;
   final String category;
+  final String? id;
   // Changed to List<String> to hold image URLs, which is JSON-friendly.
   final List<String> imageUrls;
 
@@ -13,6 +14,7 @@ class Product {
     required this.productName,
     required this.price,
     this.tax,
+    this.id,
     required this.description,
     required this.category,
     required this.imageUrls, // Updated constructor
@@ -27,6 +29,7 @@ class Product {
       'description': description,
       'category': category,
       'imageUrls': imageUrls,
+      '_id': id
     };
   }
 
@@ -53,6 +56,7 @@ class Product {
       description: json['description'] as String? ?? '',
       category: json['category'] as String? ?? '',
       imageUrls: imageUrls,
+      id: json["_id"]
     );
   }
 }

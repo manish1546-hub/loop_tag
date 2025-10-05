@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loop_tag/app/data/product_model.dart';
+import 'package:loop_tag/app/data/product_upload_model.dart';
+import 'package:loop_tag/app/routes/app_pages.dart';
+import 'package:loop_tag/app/utils/core/product_api.dart';
 
 class AddProductController extends GetxController {
   // Text Editing Controllers for form fields
@@ -22,6 +25,11 @@ class AddProductController extends GetxController {
     'Clothing',
     'Home Goods',
   ];
+
+  // --- NEW ---
+  // State to hold the product after it's successfully created.
+  // The UI will react to changes in this variable.
+  final Rx<Product?> createdProduct = Rx<Product?>(null);
 
   // Method to handle image selection from the gallery
   Future<void> pickImages() async {
@@ -59,7 +67,7 @@ class AddProductController extends GetxController {
   }
 
   // Method to handle product submission
-  void addProduct() {
+  Future<void> addProduct() async {
     // Basic validation
     if (productNameController.text.isEmpty ||
         priceController.text.isEmpty ||
@@ -74,20 +82,39 @@ class AddProductController extends GetxController {
       return;
     }
 
-    // You can process and submit your data here
-    print('Product Name: ${productNameController.text}');
-    print('Price: ${priceController.text}');
-    print('Discounted Price: ${discountedPriceController.text}');
-    print('Description: ${descriptionController.text}');
-    print('Category: ${selectedCategory.value}');
-    print('Images: ${selectedImages.map((e) => e.path).toList()}');
-
-    Get.snackbar(
-      'Success',
-      'Product added successfully!',
-      backgroundColor: Colors.green.withOpacity(0.8),
-      colorText: Colors.white,
+    final productToUpload = ProductUploadData(
+      productName: productNameController.text,
+      price: double.tryParse(priceController.text) ?? 0,
+      discountedPrice: discountedPriceController.text.isNotEmpty
+          ? double.tryParse(discountedPriceController.text)
+          : null,
+      description: descriptionController.text,
+      category: selectedCategory.value,
+      images: selectedImages,
     );
+
+    final result = await ProductApiService().postProduct(productToUpload);
+
+    // --- UPDATED ---
+    // If successful, store the created product, which will trigger the UI update.
+    if (result != null) {
+      createdProduct.value = result;
+    }
+  }
+
+  // --- NEW ---
+  // Method to navigate to the NFC writer screen, passing the product ID as an argument.
+  void goToNfcWriter() {
+    if (createdProduct.value != null && createdProduct.value!.id!.isNotEmpty) {
+      Get.toNamed(Routes.NFC_WRITER, arguments: createdProduct.value!.id);
+    } else {
+      Get.snackbar(
+        'Error',
+        'Could not get a valid Product ID to write.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 
   // Dispose controllers when the screen is closed
@@ -100,3 +127,4 @@ class AddProductController extends GetxController {
     super.onClose();
   }
 }
+

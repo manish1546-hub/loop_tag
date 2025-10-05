@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
-import 'package:loop_tag/app/utils/core/login_api.dart';
+import 'package:loop_tag/app/modules/NfcWriter/controllers/nfc_writer_controller.dart';
 import 'package:lottie/lottie.dart';
 
-import '../controllers/scanner_controller.dart';
+class NfcWriterView extends GetView<NfcWriterController> {
+  const NfcWriterView({super.key});
 
-class ScannerView extends GetView<ScannerController> {
-  const ScannerView({super.key});
   @override
   Widget build(BuildContext context) {
+    // Initialize the controller
+    Get.put(NfcWriterController());
+
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => AuthApiService().logout(),
-        child: Icon(Icons.logout),
-      ),
-      body: SizedBox(
-        height: double.infinity,
-        width: double.infinity,
+      appBar: AppBar(title: const Text('Write to NFC Tag'), centerTitle: true),
+      body: Center(
         child: Obx(
           () => Stack(
             alignment: Alignment.center,
             children: [
-              if (!controller.cannotScan.value)
+              if (controller.isNfcAvailable.value)
                 Lottie.asset(
-                  "assets/images/scanning-anim.json",
-                  width: double.infinity,
+                  "assets/images/scanning-anim.json", // Reusing the scanning animation
+                  width: Get.width,
                 ),
 
               Column(
@@ -35,21 +31,20 @@ class ScannerView extends GetView<ScannerController> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(2000),
-                      color: controller.cannotScan.value ? null : Colors.white,
+                      color:
+                          !controller.isNfcAvailable.value
+                              ? null
+                              : Colors.white,
                     ),
                     margin: const EdgeInsets.only(top: 40, bottom: 20),
                     child: SvgPicture.asset(
-                      controller.cannotScan.value
+                      !controller.isNfcAvailable.value
                           ? "assets/icons/disconnect.svg"
                           : "assets/icons/logo.svg",
                       width: 80,
                     ),
                   ),
-                  Text(
-                    controller.cannotScan.value
-                        ? "Cannot scan a Loop Tag in this device"
-                        : "Tap on a Loop Tag to scan",
-                  ),
+                  Text(controller.statusMessage.value),
                 ],
               ),
             ],
