@@ -19,6 +19,8 @@
   "homepage": "https://github.com/manish1546-hub/loop_tag#readme",
   "dependencies": {
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcryptjs": "^3.0.2",
     "express": "^5.1.0",
     "express-async-handler": "^1.2.0",
     "mongoose": "^8.19.0",
