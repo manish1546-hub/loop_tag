@@ -1,23 +1,48 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  //TODO: Implement LoginController
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final isPasswordHidden = true.obs;
+  final isLoading = false.obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  void togglePasswordVisibility() {
+    isPasswordHidden.value = !isPasswordHidden.value;
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void login() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      Get.snackbar("Error", "Please enter both email and password");
+      return;
+    }
+
+    isLoading.value = true;
+
+    await Future.delayed(const Duration(seconds: 2)); // simulate API
+
+    isLoading.value = false;
+
+    // Example success
+    Get.snackbar("Success", "Logged in as $email");
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void forgotPassword() {
+    Get.snackbar("Forgot Password", "Redirecting to reset page...");
   }
 
-  void increment() => count.value++;
+  void signInWithGoogle() {
+    Get.snackbar("Google", "Google login tapped");
+  }
+
+  void signInWithApple() {
+    Get.snackbar("Apple", "Apple login tapped");
+  }
+
+  void signInWithFacebook() {
+    Get.snackbar("Facebook", "Facebook login tapped");
+  }
 }
