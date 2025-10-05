@@ -1,43 +1,38 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    // File Layout
-    // "rootDir": "./src",
-    // "outDir": "./dist",
+    /* === Project Structure === */
+    "rootDir": "./src",             // where your TypeScript source files live
+    "outDir": "./dist",             // where compiled JS will go
 
-    // Environment Settings
-    // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "target": "esnext",
-    "types": [],
-    // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
-    // and npm install -D @types/node
+    /* === Language Features === */
+    "target": "ES2020",             // async/await & modern JS support
+    "module": "CommonJS",           // Node-compatible modules
+    "lib": ["ES2020"],              // standard library support
+    "esModuleInterop": true,        // fixes default import issues with commonjs libs
+    "allowSyntheticDefaultImports": true, // lets you use default imports safely
+    "resolveJsonModule": true,      // allows importing JSON files
 
-    // Other Outputs
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    /* === Strictness === */
+    "strict": true,                 // enables all strict checks
+    "noImplicitAny": true,          // requires explicit types
+    "strictNullChecks": true,       // prevents null/undefined errors
+    "forceConsistentCasingInFileNames": true,
 
-    // Stricter Typechecking Options
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
+    /* === Build Performance === */
+    "skipLibCheck": true,           // skip checking .d.ts files for speed
+    "noEmitOnError": false,         // still emit JS even if type errors
+    "incremental": true,            // faster rebuilds
 
-    // Style Options
-    // "noImplicitReturns": true,
-    // "noImplicitOverride": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "noPropertyAccessFromIndexSignature": true,
+    /* === Source Maps & Debugging === */
+    "sourceMap": true,              // for debugging with ts-node-dev or VSCode
+    "declaration": true,            // generate .d.ts files for models/controllers
+    "declarationMap": false,
 
-    // Recommended Options
-    "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": false,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true,
-  }
+    /* === Module Resolution === */
+    "moduleResolution": "node",     // standard Node resolution
+    "baseUrl": ".",                 // allows path aliases if you add them later
+    // "paths": { "@/*": ["src/*"] } // optional: alias import paths
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

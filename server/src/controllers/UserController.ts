@@ -12,9 +12,9 @@ interface AuthRequest extends Request {
 //@route POST /users/register
 //@access public
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
-    const { userName, email, password, phone } = req.body;
+    const { email, password } = req.body;
 
-    if (!userName || !email || !password || !phone) {
+    if ( !email || !password) {
         res.status(401).json({ message: "All fields are mandatory!" });
         return;
     }
@@ -29,19 +29,17 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-        userName: userName,
         email: email,
         password: hashedPassword,
-        phone: phone,
     });
 
     if (user) {
         const accessToken = jwt.sign(
-            { userId: user._id, email: user.email }, 'your secret here', { expiresIn: '1d' }
+            { userId: user._id, email: user.email }, process.env.JWT_SECRET as string, { expiresIn: '1d' }
         );
 
         const refreshToken = jwt.sign(
-            { userId: user._id, email: user.email }, 'your different secret here', { expiresIn: '7d' }
+            { userId: user._id, email: user.email }, process.env.JWT_SECRET as string, { expiresIn: '7d' }
         );
 
         res.status(201).json({ accessToken, refreshToken });
@@ -68,14 +66,26 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
         return;
     }
 
-    // Compare password with hashed password
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && (email === process.env.ADMIN_EMAIL as string && password === process.env.ADMIN_PASSWORD as string)) {
         const accessToken = jwt.sign(
-            { userId: user._id, email: user.email }, 'your secret here', { expiresIn: '1d' }
+            { userId: user._id, email: user.email }, process.env.JWT_SECRET_ADMIN as string, { expiresIn: '1d' }
         );
 
         const refreshToken = jwt.sign(
-            { userId: user._id, email: user.email }, 'your different secret here', { expiresIn: '7d' }
+            { userId: user._id, email: user.email }, process.env.JWT_SECRET_ADMIN as string, { expiresIn: '7d' }
+        );
+
+        res.status(200).json({ accessToken, refreshToken, isAdmin: true });
+    }
+
+    // Compare password with hashed password
+    else if (user && (await bcrypt.compare(password, user.password))) {
+        const accessToken = jwt.sign(
+            { userId: user._id, email: user.email }, process.env.JWT_SECRET as string, { expiresIn: '1d' }
+        );
+
+        const refreshToken = jwt.sign(
+            { userId: user._id, email: user.email }, process.env.JWT_SECRET as string, { expiresIn: '7d' }
         );
 
         res.status(200).json({ accessToken, refreshToken });

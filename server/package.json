@@ -2,10 +2,11 @@
   "name": "loop-tag",
   "version": "1.0.0",
   "description": "server for loop tag app",
-  "main": "server.ts",
+  "type": "commonjs",
+  "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "nodemon src/server.ts"
   },
   "repository": {
     "type": "git",
@@ -21,11 +22,17 @@
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-async-handler": "^1.2.0",
+    "imagekit": "^6.0.0",
     "mongoose": "^8.19.0",
+    "multer": "^2.0.2",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/multer": "^2.0.0"
   }
 }
