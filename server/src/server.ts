@@ -12,11 +12,11 @@ const app = express();
 // Middleware
 app.use(express.json());
 import UserRoutes from './routes/UserRoutes';
-app.use('/User', UserRoutes);
+app.use('/api/User', UserRoutes);
 
 
 import productRoutes from './routes/productRoutes';
-app.use('/product', productRoutes);
+app.use('/api/product', productRoutes);
 
 
 

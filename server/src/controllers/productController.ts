@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 import Product from "../models/productModel";
 import { uploadToImageKit } from "./imageKit";
+import mongoose from "mongoose";
 
 /**
  * @desc   Get all products
@@ -19,7 +20,7 @@ const getAllProducts = asyncHandler(async (req: Request, res: Response) => {
  * @access Public
  */
 const addProduct = asyncHandler(async (req: Request, res: Response) => {
-    const { productName, price, discountedPrice, description, category } = req.body;
+    const { productName, price, tax, description, category } = req.body;
     const files = req.files as Express.Multer.File[];
 
     // --- Validation ---
@@ -43,7 +44,7 @@ const addProduct = asyncHandler(async (req: Request, res: Response) => {
     const newProduct = await Product.insertOne({
         productName,
         price: Number(price),
-        discountedPrice: discountedPrice ? Number(discountedPrice) : undefined,
+        tax: tax ? Number(tax) : undefined,
         description,
         category,
         imageUrls,
@@ -57,4 +58,28 @@ const addProduct = asyncHandler(async (req: Request, res: Response) => {
     }
 });
 
-export { getAllProducts, addProduct };
+/**
+ * @desc   Get a single product by ID
+ * @route  GET /api/products/:id
+ * @access Public
+ */
+const getProductById = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    // Check for a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        res.status(404);
+        throw new Error("Product not found, invalid ID format.");
+    }
+
+    const product = await Product.findById(id);
+
+    if (product) {
+        res.status(200).json(product);
+    } else {
+        res.status(404);
+        throw new Error("Product not found.");
+    }
+});
+
+export { getAllProducts, addProduct, getProductById };
