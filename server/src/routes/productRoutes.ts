@@ -5,7 +5,7 @@ import {
     addProduct,
     getProductById
 } from "../controllers/productController";
-import { authenticateAdminJWT } from "src/middleware/authMiddleware";
+import { authenticateAdminJWT } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
