@@ -1,0 +1,29 @@
+{
+  "name": "loop-tag",
+  "version": "1.0.0",
+  "description": "server for loop tag app",
+  "main": "server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manish1546-hub/loop_tag.git"
+  },
+  "author": "Leon Ronaldo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manish1546-hub/loop_tag/issues"
+  },
+  "homepage": "https://github.com/manish1546-hub/loop_tag#readme",
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
+    "mongoose": "^8.19.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
